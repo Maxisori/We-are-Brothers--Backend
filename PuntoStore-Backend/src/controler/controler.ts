@@ -30,12 +30,12 @@ export const loginUser = async (req: Request, res: Response) => {
     if (user) {
         res.json({
             success: true,
-            msg: "Logged"
+            msg: "Iniciaste sesion exitosamente"
         });       
     } else {
         res.status(401).json({
             success: false,
-            msg: "Failed to log in"
+            msg: "Erroro al iniciar sesion"
         })
     }
 }

@@ -8,5 +8,5 @@ const express_1 = __importDefault(require("express"));
 const Router = express_1.default.Router();
 exports.Router = Router;
 Router.get('/', (_, res) => {
-    res.send('Messi idolo');
+    res.send('We are Brothers');
 });

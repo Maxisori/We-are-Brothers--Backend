@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
     port: 3306,
     username: 'root',
     password: '1234',
-    database: 'puntostoredb',
+    database: 'wearebrothersdb',
     synchronize: true,
     logging: true,
     entities: [Product, User],
@@ -46,9 +46,9 @@ export const db:Array <Producto> = [
 export const udb:Array <Usuario> = [
     {
         id: 1,
-        username: "dulce",
-        email: "dulce@gmail.com",
-        password: "dulce123",
-        password2: "dulce123"
+        username: "Maci",
+        email: "Maci@gmail.com",
+        password: "maci123",
+        password2: "maci123"
     }
 ]

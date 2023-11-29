@@ -7,15 +7,16 @@ import  cors from 'cors';
 
 const app = express();
 const port = 8080;
-const corsOptions ={
-    origin:'http://localhost:3000', 
-    credentials:true,            
-    optionSuccessStatus:200
-}   
+
+app.use(function(_,res, next){
+    res.header("Acces-Control-Allow-Origin", "https://localhost:3000");
+    res.header("Acces-Control-Allow-Headers", "Origins, X-Requested-Width, Content, Accept");
+    next();
+})
     
 app.use(express.json());
 app.use ('/' , mainRouter);
-app.use (cors(corsOptions));
+app.use (cors());
 
 
 AppDataSource.initialize()

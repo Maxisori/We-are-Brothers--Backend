@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
     database: 'wearebrothersdb',
     synchronize: true,
     logging: true,
-    entities: [Product, User],
+    entities: [Product, User], 
     subscribers: [],
     migrations: []
 })
@@ -38,8 +38,8 @@ export const db:Array <Producto> = [
     {
         id: 1,
         img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-        name: "Nike",
-        price: 80,
+        name: "Remera Ovesize",
+        price: 3000,
         quantity: 1,
     }]
 
@@ -52,3 +52,6 @@ export const udb:Array <Usuario> = [
         password2: "maci123"
     }
 ]
+
+
+

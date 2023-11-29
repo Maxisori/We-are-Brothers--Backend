@@ -1,92 +1,41 @@
-import {Response, Request} from 'express'
+import { Response, Request } from 'express'
+import { AppDataSource, db, Producto, udb } from '../persistance/db';
+import { Product } from '../persistance/product';
+import { User } from '../persistance/user';
 
+export const getProducts = async (_: Request, res: Response) => {
+    const products = await AppDataSource.manager.find(Product);
+    res.json(products);
+}
 
-const productos = [
-    {
-        nombre: "Pelota",
-        modelo: "Modelo1",
-        precio: 50,
-        paisOrigen: "Argentina"
-    },
-    {
-        nombre: "Celular",
-        modelo: "Modelo2",
-        precio: 120,
-        paisOrigen: "Chile"
-    },
-    {
-        nombre: "Televisor",
-        modelo: "Modelo3",
-        precio: 150,
-        paisOrigen: "EEUU"
-    }
-];
+export const addProductsToDB = async () => {
+    db.map(async (p: Producto) => {
+        const newProduct = new Product(p.img, p.name, p.price, p.quantity);
+        await AppDataSource.manager.save(newProduct);
+    });
+}
 
-export function getProducts(_:Request, res:Response) {
-    res.send(productos);
-};
+export const addUserToDB = async () => {    
+    //const { formData } = req.body;
 
-export function getPrecio(_:Request, res:Response) {
-    const mayor100 = productos.filter(producto => producto.precio>99);
-    res.send(mayor100);
-};
+    udb.map(async (u: User) => {
+        const newUser = new User(u.username, u.email, u.password, u.password2);
+        await AppDataSource.manager.save(newUser);
+    });
+}
 
-export function modifyProducts(req:Request, res:Response){
-    const { modelo } = req.params;
-    const nuevoProducto = req.body; 
-  
-    const indiceParaModificar = productos.findIndex(producto => producto.modelo === modelo);
-  
-    if (indiceParaModificar === -1) {
-      res.status(201).send("No se encontró el modelo, no se puede modificar.");
+export const loginUser = async (req: Request, res: Response) => {
+    const { username, password } = req.body
+    const user = await AppDataSource.manager.findOne(User, { where: { username, password } });
+    if (user) {
+        res.json({
+            success: true,
+            msg: "Iniciaste sesion exitosamente"
+        });       
     } else {
-      productos[indiceParaModificar] = nuevoProducto;
-      res.send(productos);
+        res.status(401).json({
+            success: false,
+            msg: "Erroro al iniciar sesion"
+        })
     }
-  };
-
-  export function deleteProducts(req:Request, res:Response){
-    const {eliminarModelo} = req.params;
-  
-    const indiceparaeliminar = productos.findIndex(producto => producto.modelo === eliminarModelo)
-  
-    if(indiceparaeliminar === -1){
-      res.status(404).send("No se encontro el modelo");
-    } else {
-      productos.splice(indiceparaeliminar, 1);
-      res.send("Producto eliminado");
-    }
-  };
-
-
-  export function filterProducts(req:Request, res:Response){
-    const { paisFiltrado } = req.params;
-  
-    const productosPorPais = productos.filter(producto => producto.paisOrigen === paisFiltrado);
-  
-    if(productosPorPais.length === 0) {
-      res.status(404).send("No se encontraron productos de ese país");
-    } else {
-      res.send(productosPorPais);
-    }
-  
-  };
-
-  export function filterPrice(req:Request, res:Response){
-    const {precioFiltrado} = req.params;
-  
-    const productosPorPrecio = productos.filter(producto => producto.precio === parseInt(precioFiltrado))
-  
-    if(productosPorPrecio.length === 0){
-      res.status(404).send("No se encontro el precio especificado");
-    } else {
-      res.send("Producto eliminado");
-    }
-  };
-
-  export function createProducts (req:Request, res:Response) {
-    const getProduct = req.body;
-    productos.push(getProduct);
-    console.log(productos)
-    res.status(201).send(productos)
-};
+}

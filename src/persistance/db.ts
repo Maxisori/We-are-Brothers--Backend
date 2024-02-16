@@ -2,6 +2,7 @@ import { DataSource } from "typeorm"
 import { Product } from "./product"
 import { User } from "./user"
 import "reflect-metadata"
+import { Cart } from "./cart"
 
 
 export const AppDataSource = new DataSource({
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
     database: 'wearebrothersdb',
     synchronize: true,
     logging: true,
-    entities: [Product, User], 
+    entities: [Product, User, Cart], 
     subscribers: [],
     migrations: []
 })

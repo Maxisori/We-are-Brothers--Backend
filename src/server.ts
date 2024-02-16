@@ -13,10 +13,10 @@ app.use(function(_,res, next){
     res.header("Acces-Control-Allow-Headers", "Origins, X-Requested-Width, Content, Accept");
     next();
 })
-    
+app.use (cors()); 
 app.use(express.json());
 app.use ('/' , mainRouter);
-app.use (cors());
+
 
 
 AppDataSource.initialize()

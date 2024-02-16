@@ -1,18 +1,23 @@
 import { Response, Request } from 'express'
-import { AppDataSource, db, Producto, udb } from '../persistance/db';
+import { AppDataSource, udb } from '../persistance/db';
 import { Product } from '../persistance/product';
 import { User } from '../persistance/user';
+import { Cart } from '../persistance/cart';
 
 export const getProducts = async (_: Request, res: Response) => {
-    const products = await AppDataSource.manager.find(Product);
-    res.json(products);
+    const products = AppDataSource.manager.getRepository(Product);
+    const final = await products.find()
+    res.json(final);
 }
 
-export const addProductsToDB = async () => {
-    db.map(async (p: Producto) => {
-        const newProduct = new Product(p.img, p.name, p.price, p.quantity);
-        await AppDataSource.manager.save(newProduct);
-    });
+export const addProductsToDB = async (req: Request, res: Response) => {
+    const { jsonifiedCart } = req.body;
+
+    const cartEntity = new Cart(jsonifiedCart);
+
+    await AppDataSource.manager.save(Cart, cartEntity);
+
+    return res.status(201).json({ message: 'Carrito registrado exitosamente' });
 }
 
 export const addUserToDB = async () => {    

@@ -3,15 +3,16 @@ import { Product } from "./product"
 import { User } from "./user"
 import "reflect-metadata"
 import { Cart } from "./cart"
+import "dotenv/config" 
 
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
-    host: 'localhost',
+    host: process.env.DATABASE_HOST,
     port: 3306,
-    username: 'root',
-    password: '1234',
-    database: 'wearebrothersdb',
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME,
     synchronize: true,
     logging: true,
     entities: [Product, User, Cart], 
@@ -53,6 +54,3 @@ export const udb:Array <Usuario> = [
         password2: "maci123"
     }
 ]
-
-
-
